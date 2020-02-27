@@ -1,4 +1,4 @@
-import HTTPError from requests.exceptions
+from requests.exceptions import HTTPError
 import inspect
 import json
 import re
