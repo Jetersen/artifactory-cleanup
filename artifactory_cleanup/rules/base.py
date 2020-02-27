@@ -1,4 +1,4 @@
-from requests.exceptions import HTTPError
+import requests
 import inspect
 import json
 import re
@@ -205,7 +205,7 @@ class CleanupPolicy(object):
                 r = self.artifactory_session.delete(delete_url)
                 r.raise_for_status()
                 print("DESTROY MODE - delete {}".format(artifact_path))
-            except HTTPError as e:
+            except requests.exceptions.HTTPError as e:
                 # Need to check its an 404, 503, 500, 403 etc.
                 status_code = e.response.status_code
                 if status_code is 404:
