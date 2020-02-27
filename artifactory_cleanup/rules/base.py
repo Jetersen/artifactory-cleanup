@@ -199,10 +199,18 @@ class CleanupPolicy(object):
     def delete(self, artifact, destroy):
         artifact_path = quote("{repo}/{path}/{name}".format(**artifact))
         if destroy:
-            print("DESTROY MODE - delete {}".format(artifact_path))
             delete_url = "{}/{}".format(self.artifactory_url, artifact_path)
-            r = self.artifactory_session.delete(delete_url)
-            r.raise_for_status()
+            try:
+                r = self.artifactory_session.delete(delete_url)
+                r.raise_for_status()
+                print("DESTROY MODE - delete {}".format(artifact_path))
+            except HTTPError as e:
+                # Need to check its an 404, 503, 500, 403 etc.
+                status_code = e.response.status_code
+                if status_code is 404:
+                    print("DESTROY MODE - artifact not found {}".format(artifact_path))
+                else:
+                    raise
         else:
             print("DEBUG - delete {}".format(artifact_path))
 
