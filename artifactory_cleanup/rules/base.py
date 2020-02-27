@@ -206,9 +206,8 @@ class CleanupPolicy(object):
                 r.raise_for_status()
                 print("DESTROY MODE - delete {}".format(artifact_path))
             except requests.exceptions.HTTPError as e:
-                # Need to check its an 404, 503, 500, 403 etc.
                 status_code = e.response.status_code
-                if status_code is 404:
+                if status_code == 404:
                     print("DESTROY MODE - artifact not found {}".format(artifact_path))
                 else:
                     raise
