@@ -82,6 +82,7 @@ class delete_empty_folder(Rule):
         return aql_query_list
 
     def _filter_result(self, result_artifact):
+        print("fetching local repositories")
         r = self.artifactory_session.get("{}/api/repositories?type=local".format(self.artifactory_server))
         r.raise_for_status()
         content = r.json()
