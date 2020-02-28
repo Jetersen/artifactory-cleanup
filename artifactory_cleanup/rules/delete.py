@@ -90,13 +90,13 @@ class delete_empty_folder(Rule):
         for repository in content:
             if repository['packageType'] == 'GitLfs':
                 # GitLfs should be handled by the jfrog cli: https://jfrog.com/blog/clean-up-your-git-lfs-repositories-with-jfrog-cli/
-                print(f"Skipping '{repository['key']}' because it is a Git LFS repository")
+                print("Skipping '{}' because it is a Git LFS repository".format(repository['key']))
                 continue
 
             url = '{}/api/plugins/execute/deleteEmptyDirsPlugin?params=paths={}'.format(self.artifactory_server,
                                                                                         repository['key'])
 
-            print(f"Deleting empty folders for '{repository['key']}'")
+            print("Deleting empty folders for '{}'".format(repository['key']))
             r = self.artifactory_session.post(url)
             r.raise_for_status()
 
